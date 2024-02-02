@@ -201,19 +201,19 @@ estimator = make_da_pipeline(
     LogisticRegression().set_score_request(sample_weight=True),
 )
 cv = ShuffleSplit(n_splits=3, test_size=0.3, random_state=0)
-_, target_labels, _ = da_dataset.pack(as_sources=['s'], as_targets=['t'], train=False)
+_, source_target_labels , _ = da_dataset.pack(as_sources=['s'], as_targets=['t'], train=False)
 scoring = SupervisedScorer()
 scores = cross_validate(
     estimator,
     X,
     y,
     cv=cv,
-    params={'sample_domain': sample_domain, 'target_labels': target_labels},
+    params={'sample_domain': sample_domain, 'source_target_labels ': source_target_labels },
     scoring=scoring,
 )
 ```
 
-The code fails if the validation uses `SupervisedScorer` but `target_labels` are not provided.
+The code fails if the validation uses `SupervisedScorer` but `source_target_labels ` are not provided.
 
 ### Splitters
 

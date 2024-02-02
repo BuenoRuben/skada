@@ -60,7 +60,7 @@ def test_supervised_scorer(da_dataset):
         LogisticRegression().set_score_request(sample_weight=True),
     )
     cv = ShuffleSplit(n_splits=3, test_size=0.3, random_state=0)
-    _, target_labels, _ = da_dataset.pack(
+    _, source_target_labels , _ = da_dataset.pack(
         as_sources=['s'],
         as_targets=['t'],
         train=False
@@ -71,7 +71,7 @@ def test_supervised_scorer(da_dataset):
         X,
         y,
         cv=cv,
-        params={'sample_domain': sample_domain, 'target_labels': target_labels},
+        params={'sample_domain': sample_domain, 'source_target_labels ': source_target_labels },
         scoring=scoring,
     )['test_score']
     assert scores.shape[0] == 3, "evaluate 3 splits"

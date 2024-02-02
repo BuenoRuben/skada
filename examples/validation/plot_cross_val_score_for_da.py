@@ -50,13 +50,13 @@ cv = ShuffleSplit(n_splits=5, test_size=0.3, random_state=0)
 # Supervised scoring requires target labels to be passed into the pipeline
 # separately, so they are only available for the scoring.
 
-_, target_labels, _ = dataset.pack(as_sources=['s'], as_targets=['t'], train=False)
+_, source_target_labels , _ = dataset.pack(as_sources=['s'], as_targets=['t'], train=False)
 scores_sup = cross_val_score(
     estimator,
     X,
     y,
     cv=cv,
-    params={'sample_domain': sample_domain, 'target_labels': target_labels},
+    params={'sample_domain': sample_domain, 'source_target_labels ': source_target_labels },
     scoring=SupervisedScorer(),
 )
 

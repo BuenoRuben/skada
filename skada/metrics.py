@@ -57,7 +57,7 @@ class SupervisedScorer(_BaseDomainAwareScorer):
         scorer object will sign-flip the outcome of the `scorer`.
     """
 
-    __metadata_request__score = {'target_labels': True}
+    __metadata_request__score = {'source_target_labels ': True}
 
     def __init__(self, scoring=None, greater_is_better=True):
         super().__init__()
@@ -70,7 +70,7 @@ class SupervisedScorer(_BaseDomainAwareScorer):
         X,
         y=None,
         sample_domain=None,
-        target_labels=None,
+        source_target_labels =None,
         **params
     ):
         scorer = check_scoring(estimator, self.scoring)
@@ -81,7 +81,7 @@ class SupervisedScorer(_BaseDomainAwareScorer):
         return self._sign * scorer(
             estimator,
             X[~source_idx],
-            target_labels[~source_idx],
+            source_target_labels [~source_idx],
             sample_domain=sample_domain[~source_idx],
             **params
         )
