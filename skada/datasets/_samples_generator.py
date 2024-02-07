@@ -450,13 +450,15 @@ def make_shifted_datasets(
     """
 
     rng = np.random.RandomState(random_state)
-    X_source, y_source = _generate_data_2d_classif(n_samples_source, rng, label)
+    X_source, y_source = _generate_data_2d_classif(
+        n_samples_source, rng,
+        mu_regression, sigma_regression, label)
 
     if shift == "covariate_shift":
         n_samples_target_temp = n_samples_target * 100
         X_target, y_target = _generate_data_2d_classif(
-            n_samples_target_temp, rng, label
-        )
+            n_samples_target_temp, rng,
+            mu_regression, sigma_regression, label)
 
         w = np.exp(-gamma * np.sum((X_target - np.array(center)) ** 2, 1))
         w /= w.sum()
@@ -469,8 +471,8 @@ def make_shifted_datasets(
     elif shift == "target_shift":
         n_samples_target_temp = n_samples_target * 3
         X_target, y_target = _generate_data_2d_classif(
-            n_samples_target_temp, rng, label
-        )
+            n_samples_target_temp, rng,
+            mu_regression, sigma_regression, label)
 
         n_samples1 = int(8 * n_samples_target * ratio)
         n_samples2 = 8 * n_samples_target - n_samples1
@@ -492,16 +494,18 @@ def make_shifted_datasets(
         y_target = y_target[isel]
 
     elif shift == "concept_drift":
-        X_target, y_target = _generate_data_2d_classif(n_samples_target, rng, label)
+        X_target, y_target = _generate_data_2d_classif(
+            n_samples_target, rng,
+            mu_regression, sigma_regression, label)
         X_target = X_target * sigma + mean
 
     elif shift == "subspace":
         X_source, y_source = _generate_data_2d_classif_subspace(
-            n_samples_source, rng, label
-        )
+            n_samples_source, rng,
+            mu_regression, sigma_regression, label)
         X_target, y_target = _generate_data_2d_classif_subspace(
-            n_samples_target, rng, label
-        )
+            n_samples_target, rng,
+            mu_regression, sigma_regression, label)
         X_target *= -1
 
     else:
